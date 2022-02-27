@@ -32,8 +32,13 @@ while proximo:
         except NoSuchElementException:
             produto = l.find_element_by_tag_name("h2").text
             precos = l.find_elements_by_tag_name("p")
-            for p in precos:
-                preco = precos[1].text
+            qtde_p = len(precos)
+            if qtde_p ==3:
+                for p in precos:
+                    preco = precos[1].text
+            else:
+                for p in precos:
+                    preco = precos[0].text
             print(produto)
             print(preco)
             nome_note.append(produto)
@@ -42,3 +47,5 @@ while proximo:
         
     proximo.click()
     #sleep(10)
+print(nome_note)
+print(preco_note)
