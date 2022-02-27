@@ -1,3 +1,4 @@
+import pandas as pd
 from time import sleep
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
@@ -28,7 +29,6 @@ lista_note = ul_notes.find_elements_by_tag_name("li")
 for l in lista_note:
     try:
         sem_estoque = l.find_element_by_css_selector("#__next > div > main > section:nth-child(5) > div.sc-GEbAx.fqFzsY > div > ul > li:nth-child(59) > a > div.sc-cnTVOG.ICkyN > div.sc-gsFzgR.fHDydZ > span > font > font").text
-        print(sem_estoque)
     except NoSuchElementException:
         produto = l.find_element_by_tag_name("h2").text
         precos = l.find_elements_by_tag_name("p")
@@ -39,13 +39,13 @@ for l in lista_note:
         else:
             for p in precos:
                 preco = precos[0].text
-        print(produto)
-        print(preco)
         nome_note.append(produto)
-        preco_note.append(preco),
+        preco_note.append(preco)
+        print(produto, preco)
 
 browser.quit()
 
-lista_produtos = criar_dataframe(nome_note, preco)
-print(type(lista_produtos))
-print(lista_produtos)
+lista_produtos = criar_dataframe(nome_note, preco_note)
+writer = pd.ExcelWriter("Preços Notebook.xlsx", engine='xlsxwriter')
+lista_produtos.to_excel(writer,sheet_name = "notebooks", index=False)
+writer.save() 
